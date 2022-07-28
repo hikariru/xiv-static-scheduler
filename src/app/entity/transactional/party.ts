@@ -9,7 +9,7 @@ export class Party {
   readonly id?: number
 
   @Column({type: 'varchar', length: 255, unique: true})
-  @Matches('^[a-z-]$', 'i')
+  @Matches('^[a-z\-]$', 'i')
   name: string
 
   @Column({type: 'varchar', length: 255})

@@ -1,0 +1,30 @@
+<h1>パーティーの登録</h1>
+
+<div class="col-lg-6 mx-auto">
+  <form method="post" action="/sign-up">
+    <fieldset>
+      <legend>パーティ名を決めてください。</legend>
+      <p>たとえば<code>yoshi-p</code>にしたとき、 <br>
+        カレンダーのURLは <code>https://scheduler-of-light.herokuapp.com/yoshi-p</code>になります。</p>
+      <div class="col-auto">
+        <div class="input-group">
+          <div class="input-group-text">https://scheduler-of-light.herokuapp.com/</div>
+          <input type="text"
+                 class="form-control"
+                 name="party_name"
+                 id="party_name"
+                 placeholder="パーティ名"
+                 required
+                 pattern="^[a-z\-]{1,14}$">
+          <div class="input-group-text">/</div>
+          <small>半角英数字と、ハイフン（-）のみ設定できます。</small>
+        </div>
+
+      </div>
+    </fieldset>
+    <hr>
+    {{> csrf_token }}
+    <button type="submit" class="btn btn-primary">パーティーを作る</button>
+    <p>パーティーを作ると <a href="/terms">利用規約</a> に同意したとみなされます。</p>
+  </form>
+</div>
