@@ -1,25 +1,17 @@
 import {
-  AfterLoad,
-  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm'
-import {World} from '../master/world'
-import {Profile} from './profile'
-import {RaidProgress} from './raid-progress'
-import {IsInt, IsNotEmpty, Matches} from 'class-validator'
-import * as bcrypt from 'bcrypt'
+import {IsInt, Matches} from 'class-validator'
+import {Party} from './party'
+import {Job} from '../master/job'
 
-require('dotenv').config()
-
-@Entity({name: 'players'})
+@Entity()
 export class Player {
   @PrimaryGeneratedColumn()
   readonly id?: number
@@ -32,29 +24,25 @@ export class Player {
   @Matches("^[A-Z][a-z'-]{1,14}$", 'i')
   lastName: string
 
-  @Column({type: 'int'})
-  @IsInt()
-  characterId: number
-
-  @OneToOne(() => Profile)
-  profile: Profile
-
-  @OneToMany(() => RaidProgress, (raidProgress) => raidProgress.player)
-  raidProgress: RaidProgress
-
-  @IsNotEmpty()
-  rawPassword: string
-
   @Column({type: 'varchar', length: 255})
-  password?: string
+  nickName: string
 
   @Column()
   @IsInt()
-  worldId: number
+  jobId: number
 
-  @ManyToOne(() => World)
-  @JoinColumn({name: 'worldId'})
-  readonly world: World
+  @ManyToOne(() => Job)
+  @JoinColumn({name: 'jobId'})
+  readonly job: Job
+
+  @Column()
+  @IsInt()
+  partyId: number
+
+  @ManyToOne(() => Party, () => {
+  }, {onUpdate: 'CASCADE', onDelete: 'CASCADE'})
+  @JoinColumn({name: 'partyId'})
+  readonly party: Party
 
   @CreateDateColumn()
   readonly createdAt?: Date
@@ -62,30 +50,11 @@ export class Player {
   @UpdateDateColumn()
   readonly updatedAt?: Date
 
-  constructor(firstName: string, lastName: string, characterId: number, worldId: number, rawPassword?: string) {
+  constructor(firstName: string, lastName: string, nickname: string, jobId: number, partyId: number) {
     this.firstName = firstName
     this.lastName = lastName
-    this.characterId = characterId
-    this.worldId = worldId
-    if (rawPassword) {
-      this.rawPassword = rawPassword
-    }
-  }
-
-  async validatePassword(password): Promise<boolean> {
-    const hasedPassword = await bcrypt.hash(password, process.env.SALT)
-    return this.password === hasedPassword
-  }
-
-  @AfterLoad()
-  private loadPassword() {
-    this.rawPassword = this.password
-  }
-
-  @BeforeInsert()
-  private async encryptPassword() {
-    if (this.rawPassword !== this.password) {
-      this.password = await bcrypt.hash(this.rawPassword, process.env.SALT)
-    }
+    this.nickName = nickname
+    this.jobId = jobId
+    this.partyId = partyId
   }
 }

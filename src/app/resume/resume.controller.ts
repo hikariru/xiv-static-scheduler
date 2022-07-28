@@ -50,7 +50,7 @@ export class ResumeController {
     @Body('discord-id') discordId: string,
     @Body('active-time') activeTime: string,
     @Body('description') description: string,
-    @Body('raid-progress') raidProgress: string[]
+    @Body('raid-progress') raidProgress: string[],
   ) {
     console.log(raidProgress)
     // const playerId = await this.createResumeService.create(

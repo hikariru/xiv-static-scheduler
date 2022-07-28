@@ -16,6 +16,7 @@ export class RoleService {
     const roles = await this.roleRepository.find()
 
     // https://github.com/typeorm/typeorm/issues/2620
+    // ↑関係なかった
     roles.forEach((role: Role) => {
       role.jobs.sort((first: Job, second: Job) => {
         if (first.id > second.id) {

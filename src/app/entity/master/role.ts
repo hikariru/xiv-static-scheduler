@@ -1,7 +1,7 @@
 import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from 'typeorm'
 import {Job} from './job'
 
-@Entity({name: 'roles'})
+@Entity()
 export class Role {
   @PrimaryGeneratedColumn()
   readonly id: number

@@ -5,9 +5,6 @@ import * as CookieParser from 'cookie-parser'
 import {join} from 'path'
 import * as hbs from 'hbs'
 import {NotFoundExceptionFilter} from './app/common/filters/not-found-exception.filter'
-import * as session from 'express-session'
-import * as passport from 'passport'
-import flash = require('connect-flash')
 import * as csurf from 'csurf'
 import * as helmet from 'helmet'
 import {urlencoded} from 'express'
@@ -28,26 +25,20 @@ async function bootstrap() {
   app.set('view options', {layout: 'layouts/main'})
   hbs.registerPartials(join(__dirname, '..', '/views/partials'))
 
-  app.use(
-    session({
-      secret: process.env.SESSION_SECRET,
-      resave: false,
-      saveUninitialized: false,
-      cookie: {secure: true, httpOnly: true, sameSite: true, maxAge: 24 * 60 * 60 * 1000},
-    }),
-  )
-
-  app.use(passport.initialize())
-  app.use(passport.session())
-  app.use(flash())
-
   app.use(CookieParser())
   app.use(
     urlencoded({
       extended: true,
     }),
   )
-  app.use(csurf({sessionKey: process.env.SESSION_SECRET, cookie: true}))
+  app.use(csurf({sessionKey: process.env.SESSION_SECRET, cookie: {sameSite: true}}))
+  app.use((req: any, res: any, next: any) => {
+    const token = req.csrfToken();
+    res.cookie('XSRF-TOKEN', token);
+    res.locals.csrfToken = token;
+
+    next();
+  });
 
   app.useGlobalFilters(new NotFoundExceptionFilter())
   await app.listen(Number(process.env.PORT) || 3000)

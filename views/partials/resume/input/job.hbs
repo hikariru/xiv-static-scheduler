@@ -1,0 +1,12 @@
+<div class="col-md-3">
+  <label for="job-id" class="form-label">ジョブ*</label>
+  <select class="form-select" id="job-id" name="job-id">
+    {{#each roles}}
+      <optgroup label="{{ name }}">
+        {{#each jobs}}
+          <option value="{{ id }}">{{ name }}</option>
+        {{/each}}
+      </optgroup>
+    {{/each }}
+  </select>
+</div>

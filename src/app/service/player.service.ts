@@ -12,7 +12,7 @@ export class PlayerService {
   ) {
   }
 
-  async findByCharacterId(characterId: number): Promise<Player> {
-    return await this.playerRepository.findOne({characterId: characterId})
+  async findByPlayerId(playerId: number): Promise<Player> {
+    return await this.playerRepository.findOne({id: playerId})
   }
 }
