@@ -10,6 +10,7 @@ import {
 import {IsInt, Matches} from 'class-validator'
 import {Party} from './party'
 import {Job} from '../master/job'
+import {Position} from "../master/position";
 
 @Entity()
 export class Player {
@@ -37,6 +38,14 @@ export class Player {
 
   @Column()
   @IsInt()
+  positionId: number
+
+  @ManyToOne(() => Position)
+  @JoinColumn({name: 'positionId'})
+  readonly position: Position
+
+  @Column()
+  @IsInt()
   partyId: number
 
   @ManyToOne(() => Party, () => {
@@ -50,11 +59,12 @@ export class Player {
   @UpdateDateColumn()
   readonly updatedAt?: Date
 
-  constructor(firstName: string, lastName: string, nickname: string, jobId: number, partyId: number) {
+  constructor(firstName: string, lastName: string, nickname: string, jobId: number, positionId: number, partyId: number) {
     this.firstName = firstName
     this.lastName = lastName
     this.nickName = nickname
     this.jobId = jobId
+    this.positionId = positionId
     this.partyId = partyId
   }
 }
