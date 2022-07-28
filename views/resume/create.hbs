@@ -1,0 +1,23 @@
+<form method="post" action="/resume/create">
+  <div class="row g-3 justify-content-center">
+    {{> resume/input/name }}
+    <div class="w-100 d-none d-md-block"></div>
+    {{> resume/input/world_and_job }}
+    <div class="w-100 d-none d-md-block"></div>
+    {{> resume/input/twitter_and_discord }}
+    <div class="w-100 d-none d-md-block"></div>
+    {{> resume/input/active_time }}
+    <div class="w-100 d-none d-md-block"></div>
+    {{> resume/input/raid_progress }}
+    <div class="w-100 d-none d-md-block"></div>
+    {{> resume/input/description }}
+    <div class="w-100 d-none d-md-block"></div>
+    {{> resume/input/password }}
+    <div class="w-100 d-none d-md-block"></div>
+    <div class="col-6">
+      <button type="submit" class="btn w-100 btn-primary"><i class="bi bi-play-circle"></i> 登録する</button>
+    </div>
+  </div>
+  {{> csrf_token }}
+  <input type="hidden" value="{{ characterId }}" name="character-id">
+</form>
