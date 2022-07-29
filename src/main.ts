@@ -9,7 +9,7 @@ import * as csurf from 'csurf'
 import * as helmet from 'helmet'
 import {urlencoded} from 'express'
 import * as compression from 'compression'
-import session from 'express-session'
+import * as session from 'express-session'
 
 require('dotenv').config()
 
@@ -31,7 +31,7 @@ async function bootstrap() {
       secret: process.env.SESSION_SECRET,
       resave: false,
       saveUninitialized: false,
-    }),
+    })
   )
 
   app.use(CookieParser())

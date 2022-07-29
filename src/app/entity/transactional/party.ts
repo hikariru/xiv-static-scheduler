@@ -1,6 +1,5 @@
 import {Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn} from 'typeorm'
 import {Matches} from 'class-validator'
-import {Job} from '../master/job'
 import {Player} from './player'
 
 @Entity()

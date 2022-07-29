@@ -30,10 +30,10 @@ export class SignUpController {
     // const createdParty = await this.partyService.create(partyName)
 
     // if (!createdParty) {
-    session.errorMessage = 'その名前はすでに使われています。別の名前をつけてください'
-    res.redirect('/sign-up')
+    session.errorMessage = 'その名前はすでに使われています。別の名前をつけてください。'
+    return res.redirect('/sign-up')
     // }
 
-    res.redirect('/party/settings' + partyName)
+    return res.redirect('/party/settings' + partyName)
   }
 }
