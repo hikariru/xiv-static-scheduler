@@ -1,7 +1,6 @@
 import {InjectRepository} from '@nestjs/typeorm'
-import {getManager, Repository} from 'typeorm'
+import {Repository} from 'typeorm'
 import {Injectable} from '@nestjs/common'
-import {Player} from '../entity/transactional/player'
 import {validate} from 'class-validator'
 import {Party} from '../entity/transactional/party'
 

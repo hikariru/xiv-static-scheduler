@@ -9,7 +9,7 @@ export class Party {
   readonly id?: number
 
   @Column({type: 'varchar', length: 255, unique: true})
-  @Matches('^[a-z-]$', 'i')
+  @Matches('^[a-z\-]{1,16}$', 'i')
   name: string
 
   @Column({type: 'varchar', length: 255})
@@ -26,5 +26,6 @@ export class Party {
 
   constructor(name: string) {
     this.name = name
+    this.nickName = name
   }
 }

@@ -31,6 +31,6 @@ export class SignUpController {
     res.redirect('/sign-up')
     // }
 
-    res.redirect('/party/' + partyName)
+    res.redirect('/party/settings' + partyName)
   }
 }
