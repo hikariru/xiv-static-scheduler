@@ -66,6 +66,9 @@
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
   },
+  "engines": {
+    "node": "16.x"
+  },
   "license": "UNLICENSED",
   "private": true,
   "scripts": {
