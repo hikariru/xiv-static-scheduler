@@ -10,7 +10,7 @@ import {
 import {IsInt, Matches} from 'class-validator'
 import {Party} from './party'
 import {Job} from '../master/job'
-import {Position} from "../master/position";
+import {Position} from '../master/position'
 
 @Entity()
 export class Player {
@@ -59,7 +59,14 @@ export class Player {
   @UpdateDateColumn()
   readonly updatedAt?: Date
 
-  constructor(firstName: string, lastName: string, nickname: string, jobId: number, positionId: number, partyId: number) {
+  constructor(
+    firstName: string,
+    lastName: string,
+    nickname: string,
+    jobId: number,
+    positionId: number,
+    partyId: number,
+  ) {
     this.firstName = firstName
     this.lastName = lastName
     this.nickName = nickname

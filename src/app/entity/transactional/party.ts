@@ -9,14 +9,14 @@ export class Party {
   readonly id?: number
 
   @Column({type: 'varchar', length: 255, unique: true})
-  @Matches('^[a-z\-]$', 'i')
+  @Matches('^[a-z-]$', 'i')
   name: string
 
   @Column({type: 'varchar', length: 255})
   nickName: string
 
   @OneToMany(() => Player, (player) => player.party, {eager: true})
-  readonly players: Job[]
+  players: Player[]
 
   @CreateDateColumn()
   readonly createdAt?: Date
@@ -24,8 +24,7 @@ export class Party {
   @UpdateDateColumn()
   readonly updatedAt?: Date
 
-  constructor(name: string, nickname: string) {
+  constructor(name: string) {
     this.name = name
-    this.nickName = nickname
   }
 }

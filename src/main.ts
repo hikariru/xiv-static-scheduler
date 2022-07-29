@@ -9,6 +9,7 @@ import * as csurf from 'csurf'
 import * as helmet from 'helmet'
 import {urlencoded} from 'express'
 import * as compression from 'compression'
+import session from 'express-session'
 
 require('dotenv').config()
 
@@ -25,20 +26,28 @@ async function bootstrap() {
   app.set('view options', {layout: 'layouts/main'})
   hbs.registerPartials(join(__dirname, '..', '/views/partials'))
 
+  app.use(
+    session({
+      secret: process.env.SESSION_SECRET,
+      resave: false,
+      saveUninitialized: false,
+    }),
+  )
+
   app.use(CookieParser())
   app.use(
     urlencoded({
       extended: true,
     }),
   )
-  app.use(csurf({sessionKey: process.env.SESSION_SECRET, cookie: {sameSite: true}}))
+  app.use(csurf({sessionKey: process.env.SESSION_SECRET, cookie: {sameSite: true, maxAge: 24 * 60 * 60 * 1000}}))
   app.use((req: any, res: any, next: any) => {
-    const token = req.csrfToken();
-    res.cookie('XSRF-TOKEN', token);
-    res.locals.csrfToken = token;
+    const token = req.csrfToken()
+    res.cookie('XSRF-TOKEN', token)
+    res.locals.csrfToken = token
 
-    next();
-  });
+    next()
+  })
 
   app.useGlobalFilters(new NotFoundExceptionFilter())
   await app.listen(Number(process.env.PORT) || 3000)
