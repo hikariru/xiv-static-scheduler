@@ -10,9 +10,12 @@ export class SignUpController {
   @Get('')
   @Render('sign-up/index')
   index(@Req() req: Request, @Res() res: Response, @Session() session: any) {
+    const errorMessage = session.errorMessage;
+    session.errorMessage = '';
+
     return {
       title: 'パーティーの登録',
-      message: session.errorMessage,
+      errorMessage: errorMessage,
       csrfToken: req.csrfToken(),
     }
   }
