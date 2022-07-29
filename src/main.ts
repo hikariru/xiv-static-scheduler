@@ -6,10 +6,10 @@ import {join} from 'path'
 import * as hbs from 'hbs'
 import {NotFoundExceptionFilter} from './app/common/filters/not-found-exception.filter'
 import * as csurf from 'csurf'
-import * as helmet from 'helmet'
 import {urlencoded} from 'express'
 import * as compression from 'compression'
 import * as session from 'express-session'
+import helmet from "helmet";
 
 require('dotenv').config()
 

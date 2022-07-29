@@ -13,7 +13,7 @@ export class PartyService {
   }
 
   async findByName(partyName: string): Promise<Party> {
-    return await this.partyRepository.findOne({name: partyName})
+    return await this.partyRepository.findOne({where: {name: partyName}})
   }
 
   async create(partyName: string): Promise<Party> {
