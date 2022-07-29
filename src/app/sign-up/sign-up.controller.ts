@@ -1,4 +1,13 @@
-import {Body, Controller, Get, Param, ParseIntPipe, Post, Render, Req, Res, Session} from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Render,
+  Req,
+  Res,
+  Session
+} from '@nestjs/common'
 import {Request, Response} from 'express'
 import {PartyService} from '../service/party.service'
 
@@ -25,17 +34,18 @@ export class SignUpController {
     @Session() session: any
   ) {
     const createdParty = await this.partyService.create(partyName)
-    return res.redirect('/sign-up/complete/' + createdParty.spaceId)
+    return res.redirect('/sign-up/complete?space_id=' + createdParty.spaceId)
   }
 
-  @Get('/complete/:spaceId')
+  @Get('/complete')
   @Render('sign-up/complete')
-  complete(@Param('spaceId', new ParseIntPipe()) spaceId,
-           @Req() req: Request,) {
-    const spaceUrl = req.protocol + '://' + req.get('host') + '/calendar/' + spaceId
+  complete(@Req() req: Request,
+           @Body('space_id') spaceId: string) {
+    const spaceUrl = req.protocol + '://' + req.get('host') + '/calendar?space_id=' + spaceId
 
     return {
       title: 'パーティー作成完了',
+      spaceId: spaceId,
       spaceUrl: spaceUrl
     }
   }
