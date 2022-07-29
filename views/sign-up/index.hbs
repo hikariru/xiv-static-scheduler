@@ -1,12 +1,7 @@
 <div class="col-lg-6 mx-auto">
   <form method="post" action="/sign-up">
     <fieldset>
-      {{#if errorMessage}}
-        <div class="alert alert-danger" role="alert">
-          {{ errorMessage }}
-        </div>
-      {{/if}}
-      <legend>パーティIDを決めてください。</legend>
+      <legend>パーティ名を入力してください。</legend>
       <div class="col-auto">
         <div class="input-group">
           <input type="text"
@@ -14,9 +9,7 @@
                  name="party_name"
                  id="party_name"
                  placeholder="パーティ名"
-                 required
-                 pattern="^[a-z\-]{1,16}$">
-          <small class="mt-3">半角英数字と、ハイフン（-）のみ設定できます。</small>
+                 required>
         </div>
       </div>
     </fieldset>

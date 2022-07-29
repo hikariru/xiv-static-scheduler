@@ -9,13 +9,10 @@ export class SignUpController {
 
   @Get('')
   @Render('sign-up/index')
-  index(@Req() req: Request, @Res() res: Response, @Session() session: any) {
-    const errorMessage = session.errorMessage;
-    session.errorMessage = '';
+  index(@Req() req: Request, @Res() res: Response) {
 
     return {
       title: 'パーティーの登録',
-      errorMessage: errorMessage,
       csrfToken: req.csrfToken(),
     }
   }
@@ -24,16 +21,12 @@ export class SignUpController {
   async create(
     @Req() req: Request,
     @Res() res: Response,
-    @Body('party-name') partyName: string,
-    @Session() session: any,
+    @Body('party_name') partyName: string,
+    @Session() session: any
   ) {
-    // const createdParty = await this.partyService.create(partyName)
+    const createdParty = await this.partyService.create(partyName)
 
-    // if (!createdParty) {
-    session.errorMessage = 'その名前はすでに使われています。別の名前をつけてください。'
-    return res.redirect('/sign-up')
-    // }
-
-    return res.redirect('/party/settings' + partyName)
+    session.message = '登録が完了しました！このページをブックマークしてください'
+    return res.redirect('/party/' + createdParty.spaceId)
   }
 }

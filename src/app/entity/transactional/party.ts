@@ -1,5 +1,4 @@
 import {Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn} from 'typeorm'
-import {Matches} from 'class-validator'
 import {Player} from './player'
 
 @Entity()
@@ -8,11 +7,10 @@ export class Party {
   readonly id?: number
 
   @Column({type: 'varchar', length: 255, unique: true})
-  @Matches('^[a-z\-]{1,16}$', 'i')
-  name: string
+  spaceId: string
 
   @Column({type: 'varchar', length: 255})
-  nickName: string
+  name: string
 
   @OneToMany(() => Player, (player) => player.party, {eager: true})
   players: Player[]
@@ -23,8 +21,8 @@ export class Party {
   @UpdateDateColumn()
   readonly updatedAt?: Date
 
-  constructor(name: string) {
+  constructor(spaceId: string, name: string) {
+    this.spaceId = spaceId
     this.name = name
-    this.nickName = name
   }
 }

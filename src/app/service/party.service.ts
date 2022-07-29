@@ -1,8 +1,8 @@
 import {InjectRepository} from '@nestjs/typeorm'
 import {Repository} from 'typeorm'
 import {Injectable} from '@nestjs/common'
-import {validate} from 'class-validator'
 import {Party} from '../entity/transactional/party'
+import {ulid} from "ulid";
 
 @Injectable()
 export class PartyService {
@@ -12,24 +12,9 @@ export class PartyService {
   ) {
   }
 
-  async findByName(partyName: string): Promise<Party> {
-    return await this.partyRepository.findOne({where: {name: partyName}})
-  }
-
-  async create(partyName: string): Promise<Party> {
-    const existedParty = this.findByName(partyName)
-
-    if (existedParty) {
-      return null
-    }
-
-    const party = new Party(partyName)
-
-    let errors = await validate(party)
-    if (errors.length !== 0) {
-      console.info(errors)
-      return null
-    }
+  async create(name: string): Promise<Party> {
+    const spaceId = ulid().toLowerCase();
+    const party = new Party(spaceId, name)
 
     return this.partyRepository.save(party)
   }
