@@ -2,14 +2,13 @@
   <h2>パーティーの作成</h2>
   <form method="post" action="/sign-up">
     <fieldset>
-      <legend>パーティ名を入力してください。</legend>
+      <p>パーティー名を入力してください。</p>
       <div class="col-auto">
         <div class="input-group">
           <input type="text"
                  class="form-control"
-                 name="party_name"
-                 id="party_name"
-                 placeholder="パーティ名"
+                 name="partyName"
+                 placeholder="たのしいパーティー名をつけてね"
                  required>
         </div>
       </div>
@@ -17,6 +16,6 @@
     <hr>
     {{> csrf_token }}
     <button type="submit" class="btn btn-primary">パーティーを作る</button>
-    <p>パーティーを作ると <a href="/terms">利用規約</a> に同意したとみなされます。</p>
+    <p class="mt-3">パーティーを作ると <a href="/terms">利用規約</a> に同意したとみなされます。</p>
   </form>
 </div>

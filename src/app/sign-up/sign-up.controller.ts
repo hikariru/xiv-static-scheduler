@@ -2,7 +2,7 @@ import {
   Body,
   Controller,
   Get,
-  Post,
+  Post, Query,
   Render,
   Req,
   Res,
@@ -30,22 +30,22 @@ export class SignUpController {
   async create(
     @Req() req: Request,
     @Res() res: Response,
-    @Body('party_name') partyName: string,
+    @Body('partyName') partyName: string,
     @Session() session: any
   ) {
     const createdParty = await this.partyService.create(partyName)
-    return res.redirect('/sign-up/complete?space_id=' + createdParty.spaceId)
+    return res.redirect('/sign-up/complete?spaceId=' + createdParty.spaceId)
   }
 
   @Get('/complete')
   @Render('sign-up/complete')
   complete(@Req() req: Request,
-           @Body('space_id') spaceId: string) {
-    const spaceUrl = req.protocol + '://' + req.get('host') + '/calendar?space_id=' + spaceId
+           @Query() query: { spaceId: string }) {
+    const spaceUrl = req.protocol + '://' + req.get('host') + '/calendar?spaceId=' + query.spaceId
 
     return {
       title: 'パーティー作成完了',
-      spaceId: spaceId,
+      spaceId: query.spaceId,
       spaceUrl: spaceUrl
     }
   }
