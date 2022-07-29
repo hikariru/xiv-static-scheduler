@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Post, Render, Req, Res, Session} from '@nestjs/common'
+import {Body, Controller, Get, Param, ParseIntPipe, Post, Render, Req, Res, Session} from '@nestjs/common'
 import {Request, Response} from 'express'
 import {PartyService} from '../service/party.service'
 
@@ -12,7 +12,7 @@ export class SignUpController {
   index(@Req() req: Request, @Res() res: Response) {
 
     return {
-      title: 'パーティーの登録',
+      title: 'パーティーの作成',
       csrfToken: req.csrfToken(),
     }
   }
@@ -25,8 +25,18 @@ export class SignUpController {
     @Session() session: any
   ) {
     const createdParty = await this.partyService.create(partyName)
+    return res.redirect('/sign-up/complete/' + createdParty.spaceId)
+  }
 
-    session.message = '登録が完了しました！このページをブックマークしてください'
-    return res.redirect('/party/' + createdParty.spaceId)
+  @Get('/complete/:spaceId')
+  @Render('sign-up/complete')
+  complete(@Param('spaceId', new ParseIntPipe()) spaceId,
+           @Req() req: Request,) {
+    const spaceUrl = req.protocol + '://' + req.get('host') + '/calendar/' + spaceId
+
+    return {
+      title: 'パーティー作成完了',
+      spaceUrl: spaceUrl
+    }
   }
 }
