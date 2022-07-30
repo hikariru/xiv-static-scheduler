@@ -2,7 +2,7 @@ import {InjectRepository} from '@nestjs/typeorm'
 import {Repository} from 'typeorm'
 import {Injectable} from '@nestjs/common'
 import {Party} from '../entity/transactional/party'
-import {ulid} from "ulid";
+import {ulid as ulidGenerator} from "ulid";
 
 @Injectable()
 export class PartyService {
@@ -13,8 +13,8 @@ export class PartyService {
   }
 
   async create(name: string): Promise<Party> {
-    const spaceId = ulid().toLowerCase();
-    const party = new Party(spaceId, name)
+    const ulid = ulidGenerator().toLowerCase()
+    const party = new Party(ulid, name)
 
     return this.partyRepository.save(party)
   }

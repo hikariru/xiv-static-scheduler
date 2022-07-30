@@ -34,19 +34,19 @@ export class SignUpController {
     @Session() session: any
   ) {
     const createdParty = await this.partyService.create(partyName)
-    return res.redirect('/sign-up/complete?spaceId=' + createdParty.spaceId)
+    return res.redirect('/sign-up/complete?partyId=' + createdParty.ulid)
   }
 
   @Get('/complete')
   @Render('sign-up/complete')
   complete(@Req() req: Request,
-           @Query() query: { spaceId: string }) {
-    const spaceUrl = req.protocol + '://' + req.get('host') + '/calendar?spaceId=' + query.spaceId
+           @Query() query: { partyId: string }) {
+    const partyUrl = req.protocol + '://' + req.get('host') + '/calendar?partyId=' + query.partyId
 
     return {
       title: 'パーティー作成完了',
-      spaceId: query.spaceId,
-      spaceUrl: spaceUrl
+      partyId: query.partyId,
+      partyUrl: partyUrl
     }
   }
 }

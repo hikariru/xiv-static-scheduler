@@ -7,7 +7,7 @@ export class Party {
   readonly id?: number
 
   @Column({type: 'varchar', length: 255, unique: true})
-  spaceId: string
+  ulid: string
 
   @Column({type: 'varchar', length: 255})
   name: string
@@ -21,8 +21,8 @@ export class Party {
   @UpdateDateColumn()
   readonly updatedAt?: Date
 
-  constructor(spaceId: string, name: string) {
-    this.spaceId = spaceId
+  constructor(ulid: string, name: string) {
+    this.ulid = ulid
     this.name = name
   }
 }
