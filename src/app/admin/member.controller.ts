@@ -61,8 +61,8 @@ export class MemberController {
     @Body('firstName') firstName: string,
     @Body('lastName') lastName: string,
     @Body('nickname') nickname: string,
-    @Body('jobId') jobId: number,
-    @Body('positionId') positionId: number,
+    @Body('jobId') jobId: string,
+    @Body('positionId') positionId: string,
     @Query() query: { partyId: string },
   ) {
     const party = await this.partyService.findByUlid(query.partyId)
@@ -75,7 +75,7 @@ export class MemberController {
       throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST)
     }
 
-    await this.playerService.add(firstName, lastName, nickname, jobId, positionId, party.id)
+    await this.playerService.add(firstName, lastName, nickname, Number(jobId), Number(positionId), party.id)
 
     return res.redirect('/admin/member?partyId=' + party.ulid)
   }
