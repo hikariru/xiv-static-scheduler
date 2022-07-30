@@ -17,6 +17,9 @@ export class Player {
   @PrimaryGeneratedColumn()
   readonly id?: number
 
+  @Column({type: 'varchar', length: 255, unique: true})
+  ulid: string
+
   @Column({type: 'varchar', length: 255})
   @Matches("^[A-Z][a-z'-]{1,14}$", 'i')
   firstName: string
@@ -60,6 +63,7 @@ export class Player {
   readonly updatedAt?: Date
 
   constructor(
+    ulid: string,
     firstName: string,
     lastName: string,
     nickname: string,
@@ -67,6 +71,7 @@ export class Player {
     positionId: number,
     partyId: number,
   ) {
+    this.ulid = ulid
     this.firstName = firstName
     this.lastName = lastName
     this.nickName = nickname
