@@ -17,11 +17,7 @@ export class SignUpController {
   }
 
   @Post('')
-  async create(
-    @Req() req: Request,
-    @Res() res: Response,
-    @Body('partyName') partyName: string,
-  ) {
+  async create(@Req() req: Request, @Res() res: Response, @Body('partyName') partyName: string) {
     const createdParty = await this.partyService.create(partyName)
     return res.redirect('/sign-up/complete?partyId=' + createdParty.ulid)
   }

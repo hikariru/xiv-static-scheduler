@@ -29,7 +29,7 @@ export class MemberController {
     return {
       title: party.name + ' メンバー一覧',
       party: party,
-      players: players
+      players: players,
     }
   }
 
@@ -89,9 +89,7 @@ export class MemberController {
 
   @Get('/edit')
   @Render('admin/member/edit')
-  async edit(@Req() req: Request,
-             @Res() res: Response,
-             @Query() query: { playerId: string }) {
+  async edit(@Req() req: Request, @Res() res: Response, @Query() query: { playerId: string }) {
     const player = await this.playerService.findByUlid(query.playerId)
 
     if (!player) {
@@ -110,10 +108,29 @@ export class MemberController {
     }
   }
 
+  @Post('/edit')
+  async update(
+    @Res() res: Response,
+    @Body('firstName') firstName: string,
+    @Body('lastName') lastName: string,
+    @Body('nickname') nickname: string,
+    @Body('jobId') jobId: string,
+    @Body('positionId') positionId: string,
+    @Query() query: { playerId: string },
+  ) {
+    const player = await this.playerService.findByUlid(query.playerId)
+
+    if (!player) {
+      return res.redirect('/404')
+    }
+
+    await this.playerService.update(player.id, firstName, lastName, nickname, Number(jobId), Number(positionId))
+
+    return res.redirect('/admin/member?partyId=' + player.party.ulid)
+  }
+
   @Post('/delete')
-  async delete(@Req() req: Request,
-               @Res() res: Response,
-               @Query() query: { playerId: string }) {
+  async delete(@Req() req: Request, @Res() res: Response, @Query() query: { playerId: string }) {
     const player = await this.playerService.findByUlid(query.playerId)
 
     if (!player) {

@@ -37,7 +37,7 @@ export class Player {
 
   @ManyToOne(() => Job, {eager: true})
   @JoinColumn({name: 'jobId'})
-  readonly job: Job
+  job: Job
 
   @Column()
   @IsInt()
@@ -45,7 +45,7 @@ export class Player {
 
   @ManyToOne(() => Position, {eager: true})
   @JoinColumn({name: 'positionId'})
-  readonly position: Position
+  position: Position
 
   @Column()
   @IsInt()
