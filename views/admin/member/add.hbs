@@ -1,18 +1,18 @@
 <div class="col-lg-6 mx-auto">
   {{> admin/nav active='member'partyId=party.ulid }}
   <h3>メンバー追加</h3>
-  <form method="post" action="/admin/member/add">
-    <div class="row g-3 justify-content-center">
-      {{> admin/input/name }}
-      <div class="w-100 d-none d-md-block"></div>
-      {{> admin/input/nickname}}
-      <div class="w-100 d-none d-md-block"></div>
-      {{> admin/input/job_and_positon }}
-      <div class="w-100 d-none d-md-block"></div>
-      <div class="col-6">
-        <button type="submit" class="btn w-100 btn-primary"><i class="bi bi-play-circle"></i> 追加する</button>
-      </div>
+  <form method="post" action="/admin/member/add?partyId={{party.id}}">
+  <div class="row g-3 justify-content-center">
+    {{> admin/input/name }}
+    <div class="w-100 d-none d-md-block"></div>
+    {{> admin/input/nickname}}
+    <div class="w-100 d-none d-md-block"></div>
+    {{> admin/input/job_and_positon }}
+    <div class="w-100 d-none d-md-block"></div>
+    <div class="col-6">
+      <button type="submit" class="btn w-100 btn-primary"><i class="bi bi-person-plus-fill"></i> 追加する</button>
     </div>
-    {{> csrf_token }}
+  </div>
+  {{> csrf_token }}
   </form>
 </div>

@@ -6,8 +6,8 @@ import {Player} from '../entity/transactional/player'
 import {PlayerService} from './player.service'
 import {Party} from '../entity/transactional/party'
 import {PartyService} from './party.service'
-import {Position} from "../entity/master/position";
-import {PositionService} from "./position.service";
+import {Position} from '../entity/master/position'
+import {PositionService} from './position.service'
 
 @Module({
   imports: [TypeOrmModule.forFeature([Role, Party, Position, Player])],

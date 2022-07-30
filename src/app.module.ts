@@ -2,7 +2,7 @@ import {Module} from '@nestjs/common'
 import {LandingModule} from './app/landing/landing.module'
 import {TypeOrmModule} from '@nestjs/typeorm'
 import {SignUpModule} from './app/sign-up/sign-up.module'
-import {AdminModule} from "./app/admin/admin.module";
+import {AdminModule} from './app/admin/admin.module'
 
 require('dotenv').config()
 

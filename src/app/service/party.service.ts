@@ -2,7 +2,7 @@ import {InjectRepository} from '@nestjs/typeorm'
 import {Repository} from 'typeorm'
 import {Injectable} from '@nestjs/common'
 import {Party} from '../entity/transactional/party'
-import {ulid as ulidGenerator} from "ulid";
+import {ulid as ulidGenerator} from 'ulid'
 
 @Injectable()
 export class PartyService {

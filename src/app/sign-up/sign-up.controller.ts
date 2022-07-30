@@ -1,13 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Post, Query,
-  Render,
-  Req,
-  Res,
-  Session
-} from '@nestjs/common'
+import {Body, Controller, Get, Post, Query, Render, Req, Res} from '@nestjs/common'
 import {Request, Response} from 'express'
 import {PartyService} from '../service/party.service'
 
@@ -19,7 +10,6 @@ export class SignUpController {
   @Get('')
   @Render('sign-up/index')
   index(@Req() req: Request, @Res() res: Response) {
-
     return {
       title: 'パーティーの作成',
       csrfToken: req.csrfToken(),
@@ -31,7 +21,6 @@ export class SignUpController {
     @Req() req: Request,
     @Res() res: Response,
     @Body('partyName') partyName: string,
-    @Session() session: any
   ) {
     const createdParty = await this.partyService.create(partyName)
     return res.redirect('/sign-up/complete?partyId=' + createdParty.ulid)
@@ -39,14 +28,13 @@ export class SignUpController {
 
   @Get('/complete')
   @Render('sign-up/complete')
-  complete(@Req() req: Request,
-           @Query() query: { partyId: string }) {
+  complete(@Req() req: Request, @Query() query: { partyId: string }) {
     const partyUrl = req.protocol + '://' + req.get('host') + '/calendar?partyId=' + query.partyId
 
     return {
       title: 'パーティー作成完了',
       partyId: query.partyId,
-      partyUrl: partyUrl
+      partyUrl: partyUrl,
     }
   }
 }
