@@ -1,6 +1,11 @@
 <div class="col-md-12">
   <label for="nickname" class="form-label">ニックネーム</label>
-  <input type="text" class="form-control" id="nickname" name="nickname">
+  <input type="text"
+         class="form-control"
+         id="nickname"
+         name="nickname"
+         {{#if player.nickname}}value="{{ player.nickname }}"{{/if}}
+  >
 </div>
 <div class="w-100 d-none d-md-block"></div>
 <p class="col-md-12 form-text">
