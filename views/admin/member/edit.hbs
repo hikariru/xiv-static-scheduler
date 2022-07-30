@@ -1,6 +1,6 @@
 <div class="col-lg-6 mx-auto">
   {{> admin/nav active='member'partyId=player.party.ulid }}
-  <h3>メンバー追加</h3>
+  <h3>メンバー編集</h3>
   <form method="post" name="edit" action="/admin/member/edit?playerId={{player.ulid}}">
   <div class="row g-3 justify-content-center">
     {{> admin/input/name }}
@@ -17,7 +17,10 @@
   </form>
 </div>
 
-<div class="col-lg-6 mx-auto mt-5">
+<hr class="my-5">
+
+<div class="col-lg-6 mx-auto">
+  <h3>メンバー削除</h3>
   <form method="post" name="delete" action="/admin/member/delete?playerId={{player.ulid}}">
   <div class="row g-3 justify-content-center">
     <div class="col-md-12">
