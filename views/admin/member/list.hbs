@@ -1,0 +1,18 @@
+<div class="col-lg-6 mx-auto">
+  {{> admin/nav active='member'partyId=party.ulid }}
+  <h3>メンバー一覧</h3>
+  <div class="m-3">
+    {{#xif party.players.length '<' 8}}
+      <a class="btn btn-primary btn-lg" href="/admin/member/add?partyId={{party.ulid}}">メンバーを追加する</a>
+    {{/xif}}
+  </div>
+  {{#if party.players.length}}
+    リストを出そうね
+  {{else}}
+    <div class="alert alert-danger mt-3" role="alert">
+      まだメンバーがいません。メンバーを追加しましょう！
+    </div>
+  {{/if}}
+  <p>
+  </p>
+</div>

@@ -10,6 +10,7 @@ import {urlencoded} from 'express'
 import * as compression from 'compression'
 import * as session from 'express-session'
 import helmet from "helmet";
+import {xif} from "./app/helper/xif";
 
 require('dotenv').config()
 
@@ -25,6 +26,7 @@ async function bootstrap() {
   app.setViewEngine('hbs')
   app.set('view options', {layout: 'layouts/main'})
   hbs.registerPartials(join(__dirname, '..', '/views/partials'))
+  hbs.registerHelper('xif', xif)
 
   app.use(
     session({

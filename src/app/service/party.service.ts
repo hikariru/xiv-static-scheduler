@@ -18,4 +18,8 @@ export class PartyService {
 
     return this.partyRepository.save(party)
   }
+
+  async findByUlid(ulid: string): Promise<Party> {
+    return this.partyRepository.findOne({where: {ulid: ulid}})
+  }
 }
