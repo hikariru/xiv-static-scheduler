@@ -21,14 +21,14 @@ export class Player {
   ulid: string
 
   @Column({type: 'varchar', length: 255})
-  @Matches("^[A-Z][a-z'-]{1,14}$", 'i')
+  @Matches("^[A-Z][a-z'\-]{1,14}$", 'i')
   firstName: string
 
   @Column({type: 'varchar', length: 255})
-  @Matches("^[A-Z][a-z'-]{1,14}$", 'i')
+  @Matches("^[A-Z][a-z'\-]{1,14}$", 'i')
   lastName: string
 
-  @Column({type: 'varchar', length: 255})
+  @Column({type: 'varchar', length: 255, nullable: true})
   nickName: string
 
   @Column()

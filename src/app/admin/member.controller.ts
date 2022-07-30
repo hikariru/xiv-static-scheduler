@@ -27,7 +27,7 @@ export class MemberController {
     }
   }
 
-  @Get()
+  @Get('/add')
   @Render('admin/member/add')
   async add(@Req() req: Request, @Res() res: Response,
             @Query() query: { partyId: string }) {

@@ -1,0 +1,20 @@
+<div class="col-md-6">
+  <label for="job_id" class="form-label">ジョブ*</label>
+  <select class="form-select" id="job_id" name="job_id">
+    {{#each roles}}
+      <optgroup label="{{ name }}">
+        {{#each jobs}}
+          <option value="{{ id }}">{{ name }}</option>
+        {{/each}}
+      </optgroup>
+    {{/each }}
+  </select>
+</div>
+<div class="col-md-6">
+  <label for="position_id" class="form-label">ポジション*</label>
+  <select class="form-select" id="position_id" name="position_id">
+    {{#each positions}}
+      <option value="{{ id }}">{{ name }}</option>
+    {{/each }}
+  </select>
+</div>
