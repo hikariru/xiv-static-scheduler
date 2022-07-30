@@ -1,4 +1,4 @@
-import {Body, Controller, Get, HttpException, HttpStatus, Post, Query, Render, Req, Res} from '@nestjs/common'
+import {Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query, Render, Req, Res} from '@nestjs/common'
 import {PartyService} from '../service/party.service'
 import {Response, Request} from 'express'
 import {RoleService} from '../service/role.service'
@@ -24,7 +24,7 @@ export class MemberController {
       return res.redirect('/404')
     }
 
-    const players = await this.playerService.findByPartylId(party.id)
+    const players = await this.playerService.findByPartyId(party.id)
 
     return {
       title: party.name + ' メンバー一覧',
@@ -42,7 +42,7 @@ export class MemberController {
       return res.redirect('/404')
     }
 
-    const players = await this.playerService.findByPartylId(party.id)
+    const players = await this.playerService.findByPartyId(party.id)
 
     if (players.length >= 8) {
       throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST)
@@ -76,7 +76,7 @@ export class MemberController {
       return res.redirect('/404')
     }
 
-    const players = await this.playerService.findByPartylId(party.id)
+    const players = await this.playerService.findByPartyId(party.id)
 
     if (players.length >= 8) {
       throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST)
@@ -85,5 +85,43 @@ export class MemberController {
     await this.playerService.add(firstName, lastName, nickname, Number(jobId), Number(positionId), party.id)
 
     return res.redirect('/admin/member?partyId=' + party.ulid)
+  }
+
+  @Get('/edit')
+  @Render('admin/member/edit')
+  async edit(@Req() req: Request,
+             @Res() res: Response,
+             @Query() query: { playerId: string }) {
+    const player = await this.playerService.findByUlid(query.playerId)
+
+    if (!player) {
+      return res.redirect('/404')
+    }
+
+    const roles = await this.roleService.findAll()
+    const positions = await this.positionService.findAll()
+
+    return {
+      title: player.party.name + ' メンバー編集',
+      player: player,
+      roles: roles,
+      positions: positions,
+      csrfToken: req.csrfToken(),
+    }
+  }
+
+  @Post('/delete')
+  async delete(@Req() req: Request,
+               @Res() res: Response,
+               @Query() query: { playerId: string }) {
+    const player = await this.playerService.findByUlid(query.playerId)
+
+    if (!player) {
+      return res.redirect('/404')
+    }
+
+    await this.playerService.delete(player)
+
+    return res.redirect('/admin/member?partyId=' + player.party.ulid)
   }
 }

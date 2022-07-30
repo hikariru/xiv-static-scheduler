@@ -33,7 +33,15 @@ export class PlayerService {
     return this.playerRepository.save(player)
   }
 
-  async findByPartylId(partyId): Promise<Player[]> {
+  async findByPartyId(partyId): Promise<Player[]> {
     return this.playerRepository.find({where: {partyId: partyId}, order: {positionId: "ASC"}})
+  }
+
+  async findByUlid(ulid: string) {
+    return this.playerRepository.findOne({where: {ulid: ulid}})
+  }
+
+  async delete(player: Player) {
+    return this.playerRepository.remove(player)
   }
 }

@@ -52,7 +52,7 @@ export class Player {
   partyId: number
 
   @ManyToOne(() => Party, () => {
-  }, {onUpdate: 'CASCADE', onDelete: 'CASCADE'})
+  }, {onUpdate: 'CASCADE', onDelete: 'CASCADE', eager: true})
   @JoinColumn({name: 'partyId'})
   readonly party: Party
 

@@ -1,0 +1,37 @@
+<div class="col-lg-6 mx-auto">
+  {{> admin/nav active='member'partyId=player.party.ulid }}
+  <h3>メンバー追加</h3>
+  <form method="post" name="edit" action="/admin/member/edit?playerId={{player.ulid}}">
+  <div class="row g-3 justify-content-center">
+    {{> admin/input/name }}
+    <div class="w-100 d-none d-md-block"></div>
+    {{> admin/input/nickname}}
+    <div class="w-100 d-none d-md-block"></div>
+    {{> admin/input/job_and_positon }}
+    <div class="w-100 d-none d-md-block"></div>
+    <div class="col-6">
+      <button type="submit" class="btn w-100 btn-primary"><i class="bi bi-person-plus-fill"></i> 編集する</button>
+    </div>
+  </div>
+  {{> csrf_token }}
+  </form>
+</div>
+
+<div class="col-lg-6 mx-auto mt-5">
+  <form method="post" name="delete" action="/admin/member/delete?playerId={{player.ulid}}">
+  <div class="row g-3 justify-content-center">
+    <div class="col-md-12">
+      <input type="text" class="form-control" placeholder="Delete" required pattern="^Delete$">
+    </div>
+    <div class="w-100 d-none d-md-block"></div>
+    <p class="col-md-12 form-text">
+      <i class="bi bi-exclamation-triangle-fill"></i> 削除されたデータは元に戻りません。本当に削除する場合は"Delete"と入力してください
+    </p>
+    <div class="w-100 d-none d-md-block"></div>
+    <div class="col-6">
+      <button type="submit" class="btn w-100 btn-outline-danger"><i class="bi bi-person-x-fill"></i> 削除する</button>
+    </div>
+  </div>
+  {{> csrf_token }}
+  </form>
+</div>

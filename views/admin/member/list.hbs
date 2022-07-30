@@ -11,13 +11,15 @@
       <tbody>
       {{#each players}}
         <tr>
-          <td> {{ position.name }}</td>
-          <td>
+          <td class="p-3"> {{ position.name }}</td>
+          <td class="p-3">
             <img src="/assets/img/job_icons/{{ job.shortName }}.png" alt="{{ job.name }}" width="20" height="20">
             {{ firstName }} {{ lastName }}
             {{#if nickname}}({{ nickname }}){{/if}}
           </td>
-          <td><a><i class="bi bi-pencil-fill"></i></a></td>
+          <td class="p-3">
+            <a href="/admin/member/edit?playerId={{ulid}}"><i class="bi bi-pencil-fill"></i></a>
+          </td>
         </tr>
       {{/each}}
       </tbody>
