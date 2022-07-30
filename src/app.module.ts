@@ -17,7 +17,7 @@ require('dotenv').config()
       ssl: {
         rejectUnauthorized: false,
       },
-      logging: ['error', 'warn'],
+      logging: ['error', 'warn', 'info'],
       entities: ['./app/entity/**/*.ts', './dist/app/entity/**/*.js'],
     }),
   ],

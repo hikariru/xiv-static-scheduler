@@ -5,7 +5,8 @@
        href="/admin/member?partyId={{ partyId }}">メンバー設定</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link"
-       href="#">パーティー設定</a>
+    <a class="nav-link {{#xif active '==' 'party'}} active {{/xif}}"
+      {{#xif active '==' 'party'}} aria-current="page"{{/xif}}
+       href="/admin/party?partyId={{ partyId }}">パーティー設定</a>
   </li>
 </ul>

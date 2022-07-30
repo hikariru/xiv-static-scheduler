@@ -22,4 +22,16 @@ export class PartyService {
   async findByUlid(ulid: string): Promise<Party> {
     return this.partyRepository.findOne({where: {ulid: ulid}})
   }
+
+  async update(id: number, name: string): Promise<Party> {
+    let party = await this.partyRepository.findOne({where: {id: id}})
+
+    party.name = name
+
+    return this.partyRepository.save(party)
+  }
+
+  async delete(party: Party) {
+    return this.partyRepository.remove(party)
+  }
 }
