@@ -24,9 +24,12 @@ export class MemberController {
       return res.redirect('/404')
     }
 
+    const players = await this.playerService.findByPartylId(party.id)
+
     return {
       title: party.name + ' メンバー一覧',
       party: party,
+      players: players
     }
   }
 
@@ -39,7 +42,9 @@ export class MemberController {
       return res.redirect('/404')
     }
 
-    if (party.players.length >= 8) {
+    const players = await this.playerService.findByPartylId(party.id)
+
+    if (players.length >= 8) {
       throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST)
     }
 
@@ -71,7 +76,9 @@ export class MemberController {
       return res.redirect('/404')
     }
 
-    if (party.players.length >= 8) {
+    const players = await this.playerService.findByPartylId(party.id)
+
+    if (players.length >= 8) {
       throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST)
     }
 

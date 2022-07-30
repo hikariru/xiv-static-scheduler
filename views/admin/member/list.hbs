@@ -2,12 +2,26 @@
   {{> admin/nav active='member'partyId=party.ulid }}
   <h3>メンバー一覧</h3>
   <div class="m-3">
-    {{#xif party.players.length '<' 8}}
-      <a class="btn btn-primary btn-lg" href="/admin/member/add?partyId={{party.ulid}}">メンバーを追加する</a>
+    {{#xif players.length '<' 8}}
+      <a class="btn btn-primary btn-lg" href="/admin/member/add?partyId={{ party.ulid }}">メンバーを追加する</a>
     {{/xif}}
   </div>
-  {{#if party.players.length}}
-    リストを出そうね
+  {{#if players.length}}
+    <table class="table table-striped table-hover">
+      <tbody>
+      {{#each players}}
+        <tr>
+          <td> {{ position.name }}</td>
+          <td>
+            <img src="/assets/img/job_icons/{{ job.shortName }}.png" alt="{{ job.name }}" width="20" height="20">
+            {{ firstName }} {{ lastName }}
+            {{#if nickname}}({{ nickname }}){{/if}}
+          </td>
+          <td><a><i class="bi bi-pencil-fill"></i></a></td>
+        </tr>
+      {{/each}}
+      </tbody>
+    </table>
   {{else}}
     <div class="alert alert-danger mt-3" role="alert">
       まだメンバーがいません。メンバーを追加しましょう！

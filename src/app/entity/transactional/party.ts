@@ -12,7 +12,7 @@ export class Party {
   @Column({type: 'varchar', length: 255})
   name: string
 
-  @OneToMany(() => Player, (player) => player.party, {eager: true})
+  @OneToMany(() => Player, (player) => player.party)
   players: Player[]
 
   @CreateDateColumn()

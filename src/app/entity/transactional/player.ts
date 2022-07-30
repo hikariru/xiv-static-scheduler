@@ -29,13 +29,13 @@ export class Player {
   lastName: string
 
   @Column({type: 'varchar', length: 255, nullable: true})
-  nickName: string
+  nickname: string
 
   @Column()
   @IsInt()
   jobId: number
 
-  @ManyToOne(() => Job)
+  @ManyToOne(() => Job, {eager: true})
   @JoinColumn({name: 'jobId'})
   readonly job: Job
 
@@ -43,7 +43,7 @@ export class Player {
   @IsInt()
   positionId: number
 
-  @ManyToOne(() => Position)
+  @ManyToOne(() => Position, {eager: true})
   @JoinColumn({name: 'positionId'})
   readonly position: Position
 
@@ -74,7 +74,7 @@ export class Player {
     this.ulid = ulid
     this.firstName = firstName
     this.lastName = lastName
-    this.nickName = nickname
+    this.nickname = nickname
     this.jobId = jobId
     this.positionId = positionId
     this.partyId = partyId
