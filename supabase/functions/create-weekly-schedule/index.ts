@@ -37,9 +37,11 @@ function getNextWeekDates(): { startDate: string; endDate: string } {
   }
 }
 
+// CORS制限を環境変数で制御
+const allowedOrigin = Deno.env.get('ALLOWED_ORIGIN') || '*'
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Origin': allowedOrigin,
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-edge-secret',
 }
 
 Deno.serve(async (req) => {
@@ -49,6 +51,20 @@ Deno.serve(async (req) => {
   }
 
   try {
+    // 認証チェック
+    const edgeSecret = Deno.env.get('EDGE_SECRET')
+    if (edgeSecret) {
+      const providedSecret = req.headers.get('X-Edge-Secret')
+      if (!providedSecret || providedSecret !== edgeSecret) {
+        return new Response(
+          JSON.stringify({ success: false, error: 'Unauthorized' }),
+          { 
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+            status: 401 
+          }
+        )
+      }
+    }
     // Initialize Supabase Admin Client
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!
     const serviceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!

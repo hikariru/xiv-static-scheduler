@@ -1,9 +1,13 @@
 import { json } from '@sveltejs/kit';
 import { supabaseServer } from '$lib/server/supabase.js';
+import { requireDevelopmentOnly } from '$lib/server/auth.js';
 import type { RequestHandler } from './$types';
 
 export const POST: RequestHandler = async () => {
   try {
+    // 開発環境のみ許可
+    requireDevelopmentOnly();
+    
     // テーブル作成SQL
     const createTablesSQL = `
       -- weeksテーブル

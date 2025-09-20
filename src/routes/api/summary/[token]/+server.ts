@@ -27,6 +27,7 @@ export const GET: RequestHandler = async ({ params }) => {
       .from('entries')
       .select(`
         id,
+        participant_id,
         name,
         note,
         schedules (
@@ -44,7 +45,7 @@ export const GET: RequestHandler = async ({ params }) => {
 
     // 日付別集計を計算
     const startDate = new Date(week.start_date);
-    const dates = [];
+    const dates: string[] = [];
     for (let i = 0; i < 7; i++) {
       const date = new Date(startDate);
       date.setDate(startDate.getDate() + i);
@@ -88,6 +89,7 @@ export const GET: RequestHandler = async ({ params }) => {
       }));
 
       return {
+        participant_id: entry.participant_id,
         name: entry.name,
         note: entry.note,
         schedules

@@ -98,7 +98,10 @@
 			// エントリーを保存
 			const entryResponse = await fetch('/api/entries', {
 				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
+				headers: { 
+					'Content-Type': 'application/json',
+					'X-Admin-Token': 'dev-mode' // 開発環境用
+				},
 				body: JSON.stringify({
 					weekId: weekData.week.id,
 					participantId,
@@ -125,7 +128,10 @@
 			if (scheduleArray.length > 0) {
 				const schedulesResponse = await fetch('/api/schedules', {
 					method: 'POST',
-					headers: { 'Content-Type': 'application/json' },
+					headers: { 
+						'Content-Type': 'application/json',
+						'X-Admin-Token': 'dev-mode' // 開発環境用
+					},
 					body: JSON.stringify({
 						entryId: entry.id,
 						schedules: scheduleArray
@@ -146,11 +152,8 @@
 		}
 	}
 	
-	function toggleStatus(date: string) {
-		const currentStatus = schedules[date];
-		const currentIndex = statusOptions.indexOf(currentStatus as Status);
-		const nextIndex = (currentIndex + 1) % statusOptions.length;
-		schedules[date] = statusOptions[nextIndex];
+	function setStatus(date: string, status: Status) {
+		schedules[date] = status;
 		
 		// 自動保存（デバウンス）
 		if (name.trim()) {
@@ -158,14 +161,6 @@
 		}
 	}
 	
-	function getStatusColor(status: Status | null): string {
-		switch (status) {
-			case '○': return 'btn-success';
-			case '△': return 'btn-warning';
-			case '×': return 'btn-error';
-			default: return 'btn-ghost';
-		}
-	}
 	
 	function formatDate(dateString: string): string {
 		const date = new Date(dateString);
@@ -254,12 +249,36 @@
 									<td class="font-bold">{dayLabels[index]}</td>
 									<td>{formatDate(date)}</td>
 									<td>
-										<button
-											class="btn {getStatusColor(schedules[date])} btn-sm"
-											on:click={() => toggleStatus(date)}
-										>
-											{schedules[date] || '未選択'}
-										</button>
+										<div class="flex gap-2">
+											<!-- ○ボタン -->
+											<button
+												class="btn btn-sm min-w-[50px] {schedules[date] === '○' ? 'btn-success' : 'btn-outline btn-success'}"
+												on:click={() => setStatus(date, '○')}
+											>
+												○
+											</button>
+											<!-- △ボタン -->
+											<button
+												class="btn btn-sm min-w-[50px] {schedules[date] === '△' ? 'btn-warning' : 'btn-outline btn-warning'}"
+												on:click={() => setStatus(date, '△')}
+											>
+												△
+											</button>
+											<!-- ×ボタン -->
+											<button
+												class="btn btn-sm min-w-[50px] {schedules[date] === '×' ? 'btn-error' : 'btn-outline btn-error'}"
+												on:click={() => setStatus(date, '×')}
+											>
+												×
+											</button>
+											<!-- クリアボタン -->
+											<button
+												class="btn btn-sm btn-ghost text-xs"
+												on:click={() => schedules[date] = null}
+											>
+												クリア
+											</button>
+										</div>
 									</td>
 								</tr>
 							{/each}

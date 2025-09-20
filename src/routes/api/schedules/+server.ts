@@ -1,9 +1,13 @@
 import { json } from '@sveltejs/kit';
 import { supabaseServer } from '$lib/server/supabase.js';
+import { requireAdminAuth } from '$lib/server/auth.js';
 import type { RequestHandler } from './$types';
 
 export const POST: RequestHandler = async ({ request }) => {
   try {
+    // 管理認証チェック
+    requireAdminAuth(request);
+    
     const { entryId, schedules } = await request.json();
 
     // バリデーション
