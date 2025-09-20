@@ -104,27 +104,47 @@
                         <th class="text-warning">△</th>
                         <th class="text-error">×</th>
                         <th>合計</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
                     {#each data.dailySummary as day, index}
-                        <tr class={isOptimalDate(day.date) ? 'bg-success/20' : ''}>
+                        <tr class={isOptimalDate(day.date) ? 'bg-success/20' : data.finalizedDates.includes(day.date) ? 'bg-primary/20' : ''}>
                             <td class="font-bold">
                                 {dayLabels[index]}
-                                {#if isOptimalDate(day.date)}
-                                    <Trophy class="w-4 h-4 inline text-yellow-500 ml-1"/>
-                                {/if}
                             </td>
                             <td>{formatDate(day.date)}</td>
                             <td class="text-success font-bold">{day.counts['○']}</td>
                             <td class="text-warning font-bold">{day.counts['△']}</td>
                             <td class="text-error font-bold">{day.counts['×']}</td>
                             <td class="font-bold">{day.total}</td>
+                            <td>
+                                {#if data.finalizedDates.includes(day.date)}
+                                    <span class="badge badge-primary">確定済み</span>
+                                {:else}
+                                    <span class="text-base-content/50">-</span>
+                                {/if}
+                            </td>
                         </tr>
                     {/each}
                     </tbody>
                 </table>
             </div>
+
+            <!-- 確定済み日程の表示のみ -->
+            {#if data.isFinalized}
+                <div class="mt-6 p-4 bg-primary/10 rounded-lg">
+                    <h3 class="text-lg font-bold text-primary mb-2">📅 確定した活動日</h3>
+                    <div class="flex flex-wrap gap-2">
+                        {#each data.finalizedDates as date}
+                            {@const dayIndex = data.week.dates.indexOf(date)}
+                            <span class="badge badge-primary badge-lg">
+                                {dayLabels[dayIndex]} {formatDate(date)}
+                            </span>
+                        {/each}
+                    </div>
+                </div>
+            {/if}
         </div>
     </div>
 

@@ -1,5 +1,6 @@
 import { error, fail, redirect } from "@sveltejs/kit";
 import { supabaseServer } from "$lib/server/supabase.js";
+import { DISCORD_WEBHOOK_URL } from "$env/static/private";
 import type { Actions, PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async ({ params }) => {
@@ -18,6 +19,15 @@ export const load: PageServerLoad = async ({ params }) => {
       throw error(404, "指定された週が見つかりません");
     }
 
+    // 確定済み日程を取得
+    const { data: finalizedSchedules, error: finalizedError } = await supabaseServer
+      .from("finalized_schedules")
+      .select("finalized_date")
+      .eq("week_id", weekData.id)
+      .order("finalized_date");
+
+    const finalizedDates = finalizedSchedules?.map(schedule => schedule.finalized_date) || [];
+
     // 週の日付配列を生成
     const startDate = new Date(weekData.start_date);
     const dates: string[] = [];
@@ -31,15 +41,15 @@ export const load: PageServerLoad = async ({ params }) => {
     const { data: entriesData, error: entriesError } = await supabaseServer
       .from("entries")
       .select(`
-				id,
-				participant_id,
-				name,
-				note,
-				schedules (
-					date,
-					status
-				)
-			`)
+			id,
+			participant_id,
+			name,
+			note,
+			schedules (
+				date,
+				status
+			)
+		`)
       .eq("week_id", weekData.id)
       .order("name");
 
@@ -112,74 +122,76 @@ export const load: PageServerLoad = async ({ params }) => {
       participants,
       dailySummary,
       optimalDates,
+      finalizedDates,
+      isFinalized: finalizedDates.length > 0,
     };
   } catch (err) {
     console.error("Summary data loading error:", err);
     throw error(500, "データの読み込みに失敗しました");
   }
-};
+};;
 
 export const actions: Actions = {
-  deleteParticipant: async ({ request, params }) => {
-    const { week_token } = params;
-    const data = await request.formData();
-    const participantId = data.get("participant_id")?.toString();
+	deleteParticipant: async ({ request, params }) => {
+		const { week_token } = params;
+		const data = await request.formData();
+		const participantId = data.get("participant_id")?.toString();
 
-    if (!participantId) {
-      return fail(400, { error: "参加者IDが指定されていません" });
-    }
+		if (!participantId) {
+			return fail(400, { error: "参加者IDが指定されていません" });
+		}
 
-    try {
-      // 週情報を取得
-      const { data: weekData, error: weekError } = await supabaseServer
-        .from("weeks")
-        .select("id")
-        .eq("url_token", week_token)
-        .eq("is_active", true)
-        .single();
+		try {
+			// 週情報を取得
+			const { data: weekData, error: weekError } = await supabaseServer
+				.from("weeks")
+				.select("id")
+				.eq("url_token", week_token)
+				.eq("is_active", true)
+				.single();
 
-      if (weekError || !weekData) {
-        return fail(404, { error: "指定された週が見つかりません" });
-      }
+			if (weekError || !weekData) {
+				return fail(404, { error: "指定された週が見つかりません" });
+			}
 
-      // エントリーを取得
-      const { data: entryData, error: entryError } = await supabaseServer
-        .from("entries")
-        .select("id")
-        .eq("week_id", weekData.id)
-        .eq("participant_id", participantId)
-        .single();
+			// エントリーを取得
+			const { data: entryData, error: entryError } = await supabaseServer
+				.from("entries")
+				.select("id")
+				.eq("week_id", weekData.id)
+				.eq("participant_id", participantId)
+				.single();
 
-      if (entryError || !entryData) {
-        return fail(404, { error: "指定された参加者が見つかりません" });
-      }
+			if (entryError || !entryData) {
+				return fail(404, { error: "指定された参加者が見つかりません" });
+			}
 
-      // スケジュールを削除
-      const { error: scheduleDeleteError } = await supabaseServer
-        .from("schedules")
-        .delete()
-        .eq("entry_id", entryData.id);
+			// スケジュールを削除
+			const { error: scheduleDeleteError } = await supabaseServer
+				.from("schedules")
+				.delete()
+				.eq("entry_id", entryData.id);
 
-      if (scheduleDeleteError) {
-        console.error("Schedule delete error:", scheduleDeleteError);
-        return fail(500, { error: "スケジュールの削除に失敗しました" });
-      }
+			if (scheduleDeleteError) {
+				console.error("Schedule delete error:", scheduleDeleteError);
+				return fail(500, { error: "スケジュールの削除に失敗しました" });
+			}
 
-      // エントリーを削除
-      const { error: entryDeleteError } = await supabaseServer
-        .from("entries")
-        .delete()
-        .eq("id", entryData.id);
+			// エントリーを削除
+			const { error: entryDeleteError } = await supabaseServer
+				.from("entries")
+				.delete()
+				.eq("id", entryData.id);
 
-      if (entryDeleteError) {
-        console.error("Entry delete error:", entryDeleteError);
-        return fail(500, { error: "エントリーの削除に失敗しました" });
-      }
+			if (entryDeleteError) {
+				console.error("Entry delete error:", entryDeleteError);
+				return fail(500, { error: "エントリーの削除に失敗しました" });
+			}
 
-      return { success: true };
-    } catch (err) {
-      console.error("Delete action error:", err);
-      return fail(500, { error: "削除中にエラーが発生しました" });
-    }
-  },
+			return { success: true };
+		} catch (err) {
+			console.error("Delete action error:", err);
+			return fail(500, { error: "削除中にエラーが発生しました" });
+		}
+	},
 };

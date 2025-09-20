@@ -7,4 +7,5 @@ declare module "$env/static/private" {
   export const ADMIN_API_TOKEN: string;
   export const ALLOWED_ORIGIN: string;
   export const EDGE_SECRET: string;
+  export const CRON_SECRET: string;
 }
