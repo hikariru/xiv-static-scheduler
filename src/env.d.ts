@@ -1,6 +1,6 @@
 /// <reference types="@sveltejs/kit" />
 
-declare module '$env/static/private' {
+declare module "$env/static/private" {
   export const SUPABASE_URL: string;
   export const SUPABASE_SERVICE_ROLE_KEY: string;
   export const DISCORD_WEBHOOK_URL: string;

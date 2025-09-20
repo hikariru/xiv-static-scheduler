@@ -1,4 +1,4 @@
-import { ulid } from 'ulid';
+import { ulid } from "ulid";
 
 /**
  * 小文字のURLトークンを生成
